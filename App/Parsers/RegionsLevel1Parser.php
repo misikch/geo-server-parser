@@ -3,9 +3,14 @@
 namespace App\Parsers;
 
 use App\Db\DbConnectionInterface;
+use App\Traits\FileRunnerTrait;
+use App\Values\RegionsLevel1Value;
 
 class RegionsLevel1Parser  extends BaseParser implements ParserInterface
 {
+    use FileRunnerTrait;
+
+    private $regions1File = __DIR__ . '/../../Sourses/admin1CodesASCII.txt';
 
     public function __construct(DbConnectionInterface $dbConnection)
     {
@@ -14,6 +19,44 @@ class RegionsLevel1Parser  extends BaseParser implements ParserInterface
 
     public function parse()
     {
+        $parseFunction = $this->getParseFunction();
 
+        $this->runFile($this->regions1File, $parseFunction);
     }
+
+    private function getParseFunction(): \Closure
+    {
+        $dbConnection = $this->dbConnection;
+
+        return function ($line) use ($dbConnection) {
+            $regionLevel1Value = $this->getRegionLevel1ValueFromString($line);
+
+            $query = "INSERT INTO `geo_regions_level1` (`id`, `name`, `code`, `country_code`)  VALUES (:id, :r_name, :code, :country_code); ";
+            $data = [
+                'id' => $regionLevel1Value->getGeonameId(),
+                'r_name' => $regionLevel1Value->getName(),
+                'code' => $regionLevel1Value->getCode(),
+                'country_code' => $regionLevel1Value->getCountryCode(),
+            ];
+
+            $dbConnection->insert($query, $data);
+        };
+    }
+
+    private function getRegionLevel1ValueFromString(string $line): RegionsLevel1Value
+    {
+        $lineAsArray = explode("\t", $line);
+
+        list($countryCode, $code) = explode('.', $lineAsArray[0]);
+
+        $data = [
+            $countryCode,
+            $code,
+            $lineAsArray[1],
+            (int) $lineAsArray[3],
+        ];
+
+        return new RegionsLevel1Value($data);
+    }
+
 }
