@@ -50,7 +50,7 @@ class MysqlDbConnection implements DbConnectionInterface
      * @param null $data
      * @return int
      */
-    public function query(string $query, $data = []): int {
+    public function query($query, $data = []): int {
         $sth = $this->getConnection()->prepare($query);
         $sth->execute($data);
 
@@ -64,7 +64,7 @@ class MysqlDbConnection implements DbConnectionInterface
      * @throws MysqlDbException
      * @see FunctionsTrait::update() example
      */
-    public function insert(string $query, $data = []): string {
+    public function insert($query, $data = []): string {
         $sth = $this->getConnection()->prepare($query);
         $sth = $this->bindValues($sth, $data);
         $sth->execute();

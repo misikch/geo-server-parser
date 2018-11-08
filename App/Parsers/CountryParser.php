@@ -41,7 +41,7 @@ class CountryParser
 
             $countryValue = $this->getLineAsValueObject($line);
 
-            if (empty($countryValue->getEnglishShortName() || empty($countryValue->getCountryCode()))) {
+            if (empty($countryValue->getEnglishShortName()) || empty($countryValue->getCountryCode())) {
                 return;
             }
 
