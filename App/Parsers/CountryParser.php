@@ -52,15 +52,15 @@ class CountryParser
             }
 
             if ($countryValue->getNameEn()) {
-                $this->insertIntoGeoCountriesNames($countryValue, 'en');
+                $this->insertIntoGeoCountriesNames($countryValue->getNameEn(), 'en', $countryValue->getCountryCode());
             }
 
             if ($countryValue->getNameEs()) {
-                $this->insertIntoGeoCountriesNames($countryValue, 'es');
+                $this->insertIntoGeoCountriesNames($countryValue->getNameEs(), 'es', $countryValue->getCountryCode());
             }
 
             if ($countryValue->getNameRu()) {
-                $this->insertIntoGeoCountriesNames($countryValue, 'ru');
+                $this->insertIntoGeoCountriesNames($countryValue->getNameRu(), 'ru', $countryValue->getCountryCode());
             }
         };
     }
@@ -74,13 +74,13 @@ class CountryParser
         return new CountryValue(explode(',', $line));
     }
 
-    private function insertIntoGeoCountriesNames(CountryValue $countryValue, string $lang): int
+    private function insertIntoGeoCountriesNames(string $countryName, string $lang, string $countryCode): int
     {
         $query = " INSERT INTO `geo_counties_names` (`name`, `lang`, `country_code`) VALUES (:country_name, :lang, :country_code); ";
         $data = [
-            'country_name' => $countryValue->getNameEn(),
+            'country_name' => $countryName,
             'lang' => $lang,
-            'country_code' => $countryValue->getCountryCode(),
+            'country_code' => $countryCode,
         ];
 
         return (int) $this->dbConnection->insert($query, $data);
