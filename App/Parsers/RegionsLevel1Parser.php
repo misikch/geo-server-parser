@@ -4,13 +4,13 @@ namespace App\Parsers;
 
 use App\Db\DbConnectionInterface;
 use App\Traits\FileRunnerTrait;
-use App\Values\RegionsLevel1Value;
+use App\Values\RegionLevel1Value;
 
 class RegionsLevel1Parser  extends BaseParser implements ParserInterface
 {
     use FileRunnerTrait;
 
-    private $regions1File = __DIR__ . '/../../Sourses/admin1CodesASCII.txt';
+    private $regions1File = __DIR__ . '/../../Sources/admin1CodesASCII.txt';
 
     public function __construct(DbConnectionInterface $dbConnection)
     {
@@ -43,7 +43,7 @@ class RegionsLevel1Parser  extends BaseParser implements ParserInterface
         };
     }
 
-    private function getRegionLevel1ValueFromString(string $line): RegionsLevel1Value
+    private function getRegionLevel1ValueFromString(string $line): RegionLevel1Value
     {
         $lineAsArray = explode("\t", $line);
 
@@ -56,7 +56,7 @@ class RegionsLevel1Parser  extends BaseParser implements ParserInterface
             (int) $lineAsArray[3],
         ];
 
-        return new RegionsLevel1Value($data);
+        return new RegionLevel1Value($data);
     }
 
 }

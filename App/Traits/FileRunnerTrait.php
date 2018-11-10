@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Exception\AppException;
+use App\Exceptions\AppException;
 use Closure;
 
 trait FileRunnerTrait

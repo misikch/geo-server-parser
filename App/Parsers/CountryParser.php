@@ -3,7 +3,7 @@
 namespace App\Parsers;
 
 use App\Db\DbConnectionInterface;
-use App\Exception\AppException;
+use App\Exceptions\AppException;
 use App\Traits\FileRunnerTrait;
 use App\Values\CountryValue;
 
@@ -11,7 +11,7 @@ class CountryParser extends BaseParser implements ParserInterface
 {
     use FileRunnerTrait;
 
-    private $countiesFile = __DIR__ . '/../../Sourses/country-codes_csv.csv';
+    private $countiesFile = __DIR__ . '/../../Sources/country-codes_csv.csv';
 
     public function __construct(DbConnectionInterface $dbConnection)
     {

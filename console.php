@@ -9,7 +9,11 @@ $dbConnection = (new \App\Db\MysqlDbConnection());
 $parsers = [
     \App\Parsers\CountryParser::class,
     \App\Parsers\RegionsLevel1Parser::class,
+    \App\Parsers\RegionsLevel2Parser::class,
+    \App\Parsers\CitiesParser::class,
 ];
+
+$startTime = microtime(true);
 
 /**
  * init tables
@@ -27,3 +31,10 @@ foreach ($parsers as $parser) {
     $parserInstance->parse();
 }
 
+printTimeDiff($startTime);
+
+
+function printTimeDiff($startTime)
+{
+    echo PHP_EOL . 'running time: ', microtime(true) - $startTime . ' sec. ', PHP_EOL;
+}
