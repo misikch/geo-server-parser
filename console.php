@@ -7,10 +7,10 @@ require __DIR__ . '/vendor/autoload.php';
 $dbConnection = (new \App\Db\MysqlDbConnection());
 
 $parsers = [
-//    \App\Parsers\CountryParser::class,
-//    \App\Parsers\RegionsLevel1Parser::class,
-//    \App\Parsers\RegionsLevel2Parser::class,
-//    \App\Parsers\CitiesParser::class,
+    \App\Parsers\CountryParser::class,
+    \App\Parsers\RegionsLevel1Parser::class,
+    \App\Parsers\RegionsLevel2Parser::class,
+    \App\Parsers\CitiesParser::class,
     \App\Parsers\RegionsAndCitiesLangsParser::class,
 ];
 
