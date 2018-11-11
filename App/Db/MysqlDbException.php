@@ -2,7 +2,7 @@
 
 namespace App\Db;
 
-use App\Exception\AppException;
+use App\Exceptions\AppException;
 
 class MysqlDbException extends AppException
 {
