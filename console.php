@@ -30,6 +30,7 @@ foreach ($parsers as $parser) {
      */
     $parserInstance = new $parser($dbConnection);
     $parserInstance->parse();
+    echo $parser . ' done.' . PHP_EOL;
 }
 
 printTimeDiff($startTime);

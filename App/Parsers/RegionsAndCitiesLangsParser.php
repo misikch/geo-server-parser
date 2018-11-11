@@ -11,6 +11,7 @@ class RegionsAndCitiesLangsParser  extends BaseParser implements ParserInterface
     use FileRunnerTrait;
 
     private $regions1File = __DIR__ . '/../../Sources/alternateNames.txt';
+    private $geoAlterNamesCsv = __DIR__ . '/../../Sources/demodb_geo_alter_names.tsv';
 
     public function __construct(DbConnectionInterface $dbConnection)
     {
@@ -19,9 +20,35 @@ class RegionsAndCitiesLangsParser  extends BaseParser implements ParserInterface
 
     public function parse()
     {
-        $parseFunction = $this->getParseFunction();
+        $parseFunction = $this->getParseGeoAlterNamesCsvFile();
 
-        $this->runFile($this->regions1File, $parseFunction);
+        $this->runFile($this->geoAlterNamesCsv, $parseFunction);
+
+//        $parseFunction = $this->getParseFunction();
+//
+//        $this->runFile($this->regions1File, $parseFunction);
+    }
+
+    private function getParseGeoAlterNamesCsvFile(): \Closure
+    {
+        $dbConnection = $this->dbConnection;
+
+        return function ($line) use ($dbConnection) {
+            $lineAsArray = explode("\t", $line);
+
+            $query = "INSERT INTO `geo_alter_names` (`id`, `geoname_id`, `lang`, `name`, `is_prefered_name`)  
+                  VALUES (:id, :geoname_id, :lang, :r_name, :is_prefered_name); ";
+
+            $data = [
+                'id' => $lineAsArray[0],
+                'geoname_id' => $lineAsArray[1],
+                'lang' => $lineAsArray[2],
+                'r_name' => $lineAsArray[3],
+                'is_prefered_name' => $lineAsArray[4],
+            ];
+
+            $dbConnection->insert($query, $data);
+        };
     }
 
     private function getParseFunction(): \Closure
