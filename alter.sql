@@ -68,8 +68,8 @@ CREATE TABLE `geo_alter_names` (
 DROP TABLE IF EXISTS `geo_ipv4`;
 CREATE TABLE `geo_ipv4` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ip_from` int(11) NOT NULL,
-  `ip_to` int(11) NOT NULL,
+  `ip_from` int(11) unsigned NOT NULL,
+  `ip_to` int(11) unsigned NOT NULL,
   `country_code` varchar(2) NOT NULL,
   `country_name` varchar(200) NOT NULL,
   `region_name` varchar(255) NOT NULL,

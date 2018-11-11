@@ -34,14 +34,25 @@ class Ipv4Parser extends BaseParser implements ParserInterface
         return function ($line) use ($dbConnection) {
             $ipv4Value = $this->getIpv4ValueFromString($line);
 
-            var_dump($ipv4Value);
+            if (false === $this->validateIpv4Value($ipv4Value)) {
+                return;
+            }
 
-            $query = "INSERT INTO `geo_regions_level1` (`id`, `name`, `code`, `country_code`)  VALUES (:id, :r_name, :code, :country_code); ";
+            $query = "INSERT INTO `geo_ipv4` (`ip_from`, `ip_to`, `country_code`, `country_name`, 
+                    `region_name`, `city_name`, `lat`, `lng`, `region_code`, `timezone`)  
+                      VALUES (:ip_from, :ip_to, :country_code, :country_name, :region_name, :city_name, 
+                      :lat, :lng, :region_code, :timezone); ";
             $data = [
-                'id' => $ipv4Value->getGeonameId(),
-                'r_name' => $ipv4Value->getName(),
-                'code' => $ipv4Value->getCode(),
+                'ip_from' => $ipv4Value->getIpFrom(),
+                'ip_to' => $ipv4Value->getIpTo(),
                 'country_code' => $ipv4Value->getCountryCode(),
+                'country_name' => $ipv4Value->getCountryName(),
+                'region_name' => $ipv4Value->getRegionName(),
+                'city_name' => $ipv4Value->getCityName(),
+                'lat' => $ipv4Value->getLat(),
+                'lng' => $ipv4Value->getLng(),
+                'region_code' => $ipv4Value->getRegionCode(),
+                'timezone' => $ipv4Value->getTimezone(),
             ];
 
             $dbConnection->insert($query, $data);
@@ -59,5 +70,18 @@ class Ipv4Parser extends BaseParser implements ParserInterface
 
 
         return new Ipv4Value($lineAsArray);
+    }
+
+    private function validateIpv4Value(Ipv4Value $value): bool
+    {
+        if (empty($value->getCountryCode()) || '-' == $value->getCountryCode()) {
+            return false;
+        }
+
+        if (empty($value->getIpTo()) || empty($value->getIpFrom())) {
+            return false;
+        }
+
+        return true;
     }
 }
