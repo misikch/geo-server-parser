@@ -65,5 +65,23 @@ CREATE TABLE `geo_alter_names` (
   KEY `geoname_id+lang+is_prefered_name` (`geoname_id`,`lang`,`is_prefered_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `geo_ipv4`;
+CREATE TABLE `geo_ipv4` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_from` int(11) NOT NULL,
+  `ip_to` int(11) NOT NULL,
+  `country_code` varchar(2) NOT NULL,
+  `country_name` varchar(200) NOT NULL,
+  `region_name` varchar(255) NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  `lat` DECIMAL(10, 8) NOT NULL,
+  `lng` DECIMAL(11, 8) NOT NULL,
+  `region_code` varchar(200) NOT NULL,
+  `timezone` varchar(10),
+  PRIMARY KEY (`id`),
+  KEY `ip_from+lang+ip_to` (`ip_from`,`ip_to`),
+  KEY `country_code+lang+city_name` (`country_code`,`city_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 

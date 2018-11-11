@@ -12,6 +12,7 @@ $parsers = [
     \App\Parsers\RegionsLevel2Parser::class,
     \App\Parsers\CitiesParser::class,
     \App\Parsers\RegionsAndCitiesLangsParser::class,
+    \App\Parsers\Ipv4Parser::class,
 ];
 
 $startTime = microtime(true);
